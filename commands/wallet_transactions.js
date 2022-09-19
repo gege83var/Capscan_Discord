@@ -9,7 +9,7 @@ const { exit } = require('process');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('wallet_transactions')
-    .setDescription('Give transactions for a wallet')
+    .setDescription('Give tnx transactions for a wallet')
     .addStringOption(option =>
         option.setName('wallet')
         .setDescription('Enter a wallet')
