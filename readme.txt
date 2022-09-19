@@ -11,6 +11,8 @@ https://discord.com/oauth2/authorize?client_id=1017089081626349599&permissions=0
 -Create config.json with :
 {
     "token": "YOUR TOKEN",
+    "guildId": "YOUR DISCORD SERVER ID",
+    "clientId": "YOUR CLIENT ID",
     "defaultValues":{
         "defaultThumbnail": "https://www.ternoa.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fternoa-token-header.2f9657ab.png&w=384&q=75",
         "footerText": "Powered by Tiime Angels (with love)",
@@ -22,7 +24,8 @@ https://discord.com/oauth2/authorize?client_id=1017089081626349599&permissions=0
     }
 }
 
--The token is obtained here : https://discord.com/developers/applications/ By creating a new bot
+-The token & clientId is obtained here : https://discord.com/developers/applications/ By creating a new bot
+-Guild id is founded directly on Discord with developper mod
 
 -npm install
 -node index.js
