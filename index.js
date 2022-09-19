@@ -20,6 +20,7 @@ client.once('ready', () => {
 
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) handleCommand(client, interaction);
+    require('./deploy-commands.js');
 })
 
 client.login(token);
