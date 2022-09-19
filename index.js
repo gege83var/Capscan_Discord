@@ -6,6 +6,8 @@ const handleCommand = require('./helpers/command');
 
 const client = new Client({intents : [GatewayIntentBits.GuildMessages]});
 
+require('./deploy-commands.js');
+
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -20,7 +22,6 @@ client.once('ready', () => {
 
 client.on('interactionCreate', async interaction => {
     if (interaction.isCommand()) handleCommand(client, interaction);
-    require('./deploy-commands.js');
 })
 
 client.login(token);
