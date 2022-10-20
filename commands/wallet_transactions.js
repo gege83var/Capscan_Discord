@@ -13,7 +13,12 @@ module.exports = {
     .addStringOption(option =>
         option.setName('wallet')
         .setDescription('Enter a wallet')
-        .setRequired(true)),
+        .setRequired(true))
+    .addIntegerOption(option =>
+        option.setName('page')
+        .setDescription('Enter the page you want to see')
+        .setRequired(false)
+        .setMinValue(1)),
     
     /**
      * 
@@ -21,8 +26,14 @@ module.exports = {
      */
     async execute (interaction) {
         const wallet = interaction.options.getString('wallet');
+        var page = interaction.options.get('page');
+        if(page == undefined){
+            page = 1;
+        }else{
+            page = page.value;
+        }
         const limit = 10;
-        const offset = 0;
+        const offset = (page-1)*10;
 
         var queryJson = JSON.stringify({ query: 'query transacs{transferEntities(offset:'+offset+' first:'+limit+' filter: {or: [{to:{equalTo : "'+wallet+'"}}{from: {equalTo : "'+wallet+'"}}]}orderBy: TIMESTAMP_DESC){totalCount nodes {timestamp, amountRounded, to}}}'});
         

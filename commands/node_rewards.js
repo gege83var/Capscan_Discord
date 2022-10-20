@@ -8,18 +8,18 @@ const { exit } = require('process');
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('weekly_rewards')
-    .setDescription('Give weekly rewards for a wallet')
+    .setName('node_rewards')
+    .setDescription('Give node rewards for a wallet')
     .addStringOption(option =>
         option.setName('wallet')
         .setDescription('Enter a wallet')
-        .setRequired(true))  
+        .setRequired(true))
     .addIntegerOption(option =>
         option.setName('page')
         .setDescription('Enter the page you want to see')
         .setRequired(false)
         .setMinValue(1)),
-
+    
     /**
      * 
      * @param {CommandInteraction} interaction 
@@ -35,9 +35,9 @@ module.exports = {
         const limit = 10;
         const offset = (page-1)*10;
 
-        var queryJson = JSON.stringify({ query: 'query WeeklyRewards {  transferEntities(    offset: '+offset+'  first: '+limit+'  filter: {      and: [        { from: { equalTo: "5Cd7mevfYYwVRyeNAqcBPSzJqHyohy7HF71bRHv83Fee91q2" }}        { to: { equalTo: "'+wallet+'" }}       ]    }    orderBy: TIMESTAMP_DESC  ) {    totalCount    nodes {      timestamp      amountRounded    }  }}'});
-        
-        parsedTransacsRequested = JSON.parse(await func.RequestIndexer(queryJson)).data.transferEntities;
+        var queryJson = JSON.stringify({ query: 'query Node_Rewards{  events(    first:'+limit+'    offset:'+offset+'    orderBy: [BLOCK_HEIGHT_DESC]    filter: {      and: [        { call: { equalTo: "Rewarded" } }        {          argsValue: {            contains: "'+wallet+'"          }        }      ]    }  ) {    totalCount    nodes {      argsValue      block {        timestamp              }    }  }}'});
+
+        parsedTransacsRequested = JSON.parse(await func.RequestDictionary(queryJson)).data.events;
 
         const embedMessage = new EmbedBuilder()
             .setThumbnail(defaultValues.defaultThumbnail)
@@ -51,9 +51,9 @@ module.exports = {
 
             for(let i=0; i<limit;i++){
                 if(typeof(parsedTransacsRequested.nodes[i]) != 'undefined'){
-                    const date = parsedTransacsRequested.nodes[i].timestamp.substring(0,10);
-                    const hour = parsedTransacsRequested.nodes[i].timestamp.substring(11,19);
-                    const value = parsedTransacsRequested.nodes[i].amountRounded;
+                    const date = parsedTransacsRequested.nodes[i].block.timestamp.substring(0,10);
+                    const hour = parsedTransacsRequested.nodes[i].block.timestamp.substring(11,19);
+                    const value = parseFloat(parsedTransacsRequested.nodes[i].argsValue[1])/1000000000000000000;
 
                     embedMessage.addFields({ name: 'The  ' + date.toString() + ' at ' + hour.toString(), value: ':inbox_tray: \u200b \u200b ' + func.changeFloatForm(value) + ' $CAPS (received)' });
                 }else{

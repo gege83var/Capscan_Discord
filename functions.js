@@ -38,6 +38,36 @@ function RequestIndexer(queryJson) {
     })
 }
 
+function RequestDictionary(queryJson) {
+  var options = {
+      "method": "POST",
+      "hostname": "dictionary-mainnet.ternoa.dev",
+      "port": null,
+      "path": "/",
+      "headers": {
+          "content-type": "application/json",
+          "cache-control": "no-cache"
+      }
+    };
+  return new Promise((resolve) => {
+      var req = http.request(options, function (res) {
+          var chunks = [];
+
+          res.on("data", function (chunk) {
+            chunks.push(chunk);
+          });
+        
+          res.on("end", function () {
+            var body = Buffer.concat(chunks);
+            resolve(body.toString());
+          });
+      });
+        
+      req.write(queryJson);
+      req.end();
+  })
+}
+
 function getCollectionName(offchainData) {
     var options = {
         "method": "GET",
@@ -124,9 +154,11 @@ module.exports = {
     changeFloatForm,
     changeIntForm,
     RequestIndexer,
+    RequestDictionary,
     getCollectionName,
     getNftInformations,
     reduceWalletSize,
     walletUrl,
     nullToUnknown,
 };
+

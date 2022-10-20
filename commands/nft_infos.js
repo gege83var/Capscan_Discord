@@ -44,7 +44,7 @@ module.exports = {
                 embedMessage.setThumbnail('https://ipfs-mainnet.trnnfr.com/ipfs/'+nftInformations.image);
                 embedMessage.setColor(defaultValues.goodRequestColor);
     
-                embedMessage.addFields({ name: 'Collection ID', value: parsedNftInfosRequested.collectionId.toString() });
+                embedMessage.addFields({ name: 'Collection ID', value: func.nullToUnknown(parsedNftInfosRequested.collectionId).toString() });
                 embedMessage.addFields({ name: ':bust_in_silhouette: Owner', value: func.walletUrl(owner)});
                 embedMessage.addFields({ name: ':hourglass_flowing_sand: Created date', value: 'The  ' + date.toString() + ' at ' + hour.toString() });
             }else{

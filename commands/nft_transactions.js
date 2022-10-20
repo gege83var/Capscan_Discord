@@ -13,7 +13,12 @@ module.exports = {
     .addStringOption(option =>
         option.setName('nft_id')
         .setDescription('Enter an nft id')
-        .setRequired(true)),
+        .setRequired(true))
+    .addIntegerOption(option =>
+        option.setName('page')
+        .setDescription('Enter the page you want to see')
+        .setRequired(false)
+        .setMinValue(1)),
     
     /**
      * 
@@ -21,8 +26,14 @@ module.exports = {
      */
      async execute (interaction) {
         const nft_id = interaction.options.getString('nft_id');
+        var page = interaction.options.get('page');
+        if(page == undefined){
+            page = 1;
+        }else{
+            page = page.value;
+        }
         const limit = 10;
-        const offset = 0;
+        const offset = (page-1)*10;
 
         var queryJson = JSON.stringify({ query: 'query nftJourney{  nftEntity(id: "'+nft_id+'"){offchainData}	nftOperationEntities(    offset:'+offset+'    first:'+limit+'    filter: { nftId: { equalTo: "'+nft_id+'" } }    orderBy: TIMESTAMP_DESC  ) {    totalCount    nodes {      timestamp      from      to      priceRounded      id      typeOfTransaction          }  }}'});
 
@@ -36,7 +47,7 @@ module.exports = {
                 if(parsedNftInfosRequested.nftEntity.offchainData.length >= 46){
                     nftInformations = await func.getNftInformations(parsedNftInfosRequested.nftEntity.offchainData);
 
-                    embedMessage.setTitle('Nft ' + nftInformations.title);
+                    embedMessage.setTitle('Nft ' + nftInformations.title + ' have ' + func.changeIntForm(parsedNftInfosRequested.nftOperationEntities.totalCount) + ' transactions');
                     embedMessage.setDescription(nftInformations.description);
                     embedMessage.setThumbnail('https://ipfs-mainnet.trnnfr.com/ipfs/'+nftInformations.image);
                     embedMessage.setColor(defaultValues.goodRequestColor);
