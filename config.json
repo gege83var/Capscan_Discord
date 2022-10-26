@@ -1,0 +1,13 @@
+{
+    "token": "MTAxNzA4OTA4MTYyNjM0OTU5OQ.GJ0ph9.cTKeRTcJxQgTrAfYexUzODJiB9NMtXZu7oUwyg",
+    "clientId": "1017089081626349599",
+    "defaultValues":{
+        "defaultThumbnail": "https://www.ternoa.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fternoa-token-header.2f9657ab.png&w=384&q=75",
+        "footerText": "Powered by Tiime Angels (with love)",
+        "footerIcon": "https://www.tiime-engine.com/images/favicon.png",
+        "defaultColor": "0xd804ca",
+        "goodRequestColor": "0x4e33f8",
+        "badRequestColor": "0xff1d4d",
+        "ephemeral": true
+    }
+}
