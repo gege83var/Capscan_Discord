@@ -28,9 +28,19 @@ function RequestIndexer(queryJson) {
             });
           
             res.on("end", function () {
-              var body = Buffer.concat(chunks);
-              resolve(body.toString());
+              try{
+                var body = Buffer.concat(chunks);
+                resolve(body.toString());
+              }catch(err){
+                console.log(err);
+                resolve('error');
+              }
             });
+
+            req.on('error', error=>{
+              resolve('error');
+            });
+
         });
           
         req.write(queryJson);
@@ -58,8 +68,18 @@ function RequestDictionary(queryJson) {
           });
         
           res.on("end", function () {
-            var body = Buffer.concat(chunks);
-            resolve(body.toString());
+            try{
+              var body = Buffer.concat(chunks);
+              resolve(body.toString());
+            }catch(err){
+              console.log(err);
+              resolve('error');
+            }
+            
+          });
+
+          req.on('error', error=>{
+            resolve('error');
           });
       });
         
@@ -84,8 +104,13 @@ function getCollectionName(offchainData) {
             });
           
             res.on("end", function () {
-              var body = JSON.parse(chunks);
-              resolve(body);
+              try{
+                var body = JSON.parse(chunks);
+                resolve(body);
+              }catch(err){
+                console.log(err);
+                resolve('error');
+              }        
             });
 
             req.on('error', error => {
@@ -113,8 +138,13 @@ function getNftInformations(offchainData) {
             });
           
             res.on("end", function () {
-              var body = JSON.parse(chunks);
-              resolve(body);
+              try{
+                var body = JSON.parse(chunks);
+                resolve(body);
+              }catch(err){
+                console.log(err);
+                resolve('error');
+              }
             });
 
             req.on('error', error => {
