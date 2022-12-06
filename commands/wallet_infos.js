@@ -22,7 +22,7 @@ module.exports = {
         const wallet = interaction.options.getString('wallet');
 
         try{
-            console.log("Wammet Infos "+wallet);
+            console.log("Wallet Infos "+wallet);
 
             var queryJson = JSON.stringify({ query: 'query infos{ accountEntities( filter: {id: { equalTo: "'+wallet+'"}}) {nodes {capsAmountRounded,capsAmountFrozenRounded,capsAmountTotalRounded}}}'});
     

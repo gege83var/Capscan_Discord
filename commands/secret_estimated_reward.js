@@ -24,8 +24,8 @@ module.exports = {
             const year = dateObject.getFullYear().toString();
             const month = (`0${dateObject.getMonth()}`).slice(-2).toString();
             if(month=="00"){month="12"};
-    
-            var queryJson = JSON.stringify({ query: 'query secretEstimatedRewards{	transferEntities(		filter:{      to:{equalTo: "5GzjQQN2x9qcrGoeaYRwsWtcmT3NKzkpQwWtoYRf9p8EN5ht"}      timestamp: {greaterThan: "'+year+'-'+month+'-28T22:00:00"}    }  ){		totalCount    aggregates{			sum{				amountRounded      }    }  }    nftEntities(    offset:0    filter:{			collectionId: {in : ["82","83"]}      owner:{notEqualTo: "5GzjQQN2x9qcrGoeaYRwsWtcmT3NKzkpQwWtoYRf9p8EN5ht"}    }  ){    totalCount    groupedAggregates(groupBy:COLLECTION_ID){			keys      distinctCount{				nftId      }    }  }}'});
+            
+            var queryJson = JSON.stringify({ query: 'query secretEstimatedRewards{	transferEntities(		filter:{      to:{equalTo: "5GzjQQN2x9qcrGoeaYRwsWtcmT3NKzkpQwWtoYRf9p8EN5ht"}      timestamp: {greaterThan: "'+year+'-'+month+'-28T18:22:00"}    }  ){		totalCount    aggregates{			sum{				amountRounded      }    }  }    nftEntities(    offset:0    filter:{			collectionId: {in : ["82","83"]}      owner:{notEqualTo: "5GzjQQN2x9qcrGoeaYRwsWtcmT3NKzkpQwWtoYRf9p8EN5ht"}    }  ){    totalCount    groupedAggregates(groupBy:COLLECTION_ID){			keys      distinctCount{				nftId      }    }  }}'});
     
             parsedSecretEstimatedRewardsRequested = JSON.parse(await func.RequestIndexer(queryJson)).data;
     
@@ -37,7 +37,7 @@ module.exports = {
                 .setFooter({ text: defaultValues.footerText, iconURL: defaultValues.footerIcon })
                 .setColor(defaultValues.defaultColor)
             
-            const capsWon = parsedSecretEstimatedRewardsRequested.transferEntities.aggregates.sum.amountRounded-1000;
+            const capsWon = parsedSecretEstimatedRewardsRequested.transferEntities.aggregates.sum.amountRounded-1001;
             const nbOfComet = parsedSecretEstimatedRewardsRequested.nftEntities.groupedAggregates[0].distinctCount.nftId;
             const nbOfStar = parsedSecretEstimatedRewardsRequested.nftEntities.groupedAggregates[1].distinctCount.nftId;
             const totalNbPoints = parseInt(nbOfStar)+parseInt(nbOfComet*4);
